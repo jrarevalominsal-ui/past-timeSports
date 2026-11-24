@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Free Speaking Test: Sports & Free Time (Simple Past)</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f4f8;
+            color: #1e293b;
+            margin: 0;
+            padding: 20px;
+            line-height: 1.55;
+        }
+        .container {
+            max-width: 880px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+        }
+        h1 { color: #1d4ed8; margin-bottom: 5px; }
+        .subtitle { color: #64748b; margin-top: 0; margin-bottom: 20px; }
+        .student-box {
+            background: #f8fafc;
+            border: 1px solid #cbd5e1;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: center;
+        }
+        .student-box input {
+            flex: 1;
+            min-width: 240px;
+            padding: 9px 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            font-size: 0.95em;
+        }
+        .topic-card {
+            background: #eff6ff;
+            border-left: 5px solid #1d4ed8;
+            padding: 18px;
+            border-radius: 0 10px 10px 0;
+            margin-bottom: 20px;
+        }
+        .guide-list {
+            margin: 10px 0 0 20px;
+            padding: 0;
+            color: #1e3a8a;
+        }
+        .card {
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 18px;
+            margin: 16px 0;
+            background: #f8fafc;
+        }
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        button {
+            border: none;
+            padding: 10px 16px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 0.95em;
+            transition: opacity 0.2s, transform 0.1s;
+        }
+        button:active { transform: scale(0.98); }
+        button:disabled { opacity: 0.45; cursor: not-allowed; }
+        .btn-rec { background: #dc2626; color: white; }
+        .btn-stop { background: #d97706; color: white; }
+        .btn-submit {
+            background: #1d4ed8;
+            color: white;
+            padding: 15px 24px;
+            font-size: 1.05em;
+            width: 100%;
+            margin-top: 16px;
+        }
+        .live-status { font-size: 0.92em; font-weight: bold; color: #475569; }
+        .recording-active { color: #dc2626; }
+        .transcript-box {
+            background: #ffffff;
+            border: 1px dashed #cbd5e1;
+            border-radius: 8px;
+            padding: 14px;
+            min-height: 70px;
+            font-size: 1em;
+            color: #0f172a;
+        }
+        .final-summary {
+            margin-top: 24px;
+            padding: 24px;
+            border-radius: 12px;
+            background: #f0fdf4;
+            border: 2px solid #16a34a;
+            display: none;
+        }
+        .grade-banner {
+            background: #ffffff;
+            border: 2px solid #1d4ed8;
+            border-radius: 10px;
+            padding: 16px;
+            text-align: center;
+            margin-bottom: 16px;
+        }
+        .grade-number {
+            font-size: 2.5em;
+            font-weight: 800;
+            color: #1d4ed8;
+            line-height: 1.1;
+        }
+        .correction-box {
+            background: #ffffff;
+            border: 1px solid #bbf7d0;
+            border-radius: 8px;
+            padding: 16px;
+            margin-top: 12px;
+        }
+        .issue-item {
+            background: #fef2f2;
+            border-left: 4px solid #dc2626;
+            padding: 10px 12px;
+            margin: 8px 0;
+            border-radius: 0 6px 6px 0;
+            color: #7f1d1d;
+        }
+        .ok-item {
+            background: #f0fdf4;
+            border-left: 4px solid #16a34a;
+            padding: 10px 12px;
+            margin: 8px 0;
+            border-radius: 0 6px 6px 0;
+            color: #14532d;
+        }
+        .model-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        .model-btn {
+            background: #e0f2fe;
+            color: #075985;
+            border: 1px solid #7dd3fc;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Free Speaking Test: Sports & Free-Time Activities</h1>
+    <p class="subtitle">Habla libremente sobre el tema asignado en Simple Past. Al finalizar recibirás tu calificación y correcciones.</p>
+
+    <div class="student-box">
+        <label for="studentName"><strong>Nombre del estudiante:</strong></label>
+        <input type="text" id="studentName" placeholder="Escribe tu nombre completo aquí...">
+    </div>
+
+    <div class="topic-card">
+        <strong>Tema: What sports or free-time activities did you do last weekend?</strong>
+        <p style="margin:8px 0 6px;">Graba un relato corto en inglés (apunta a decir al menos <strong>20 palabras</strong>). Responde estas ideas guía:</p>
+        <ul class="guide-list">
+            <li>What sport or free-time activity did you do? (<em>played soccer, went swimming, rode my bike, watched a movie...</em>)</li>
+            <li>Who did you do it with, and where did you go?</li>
+            <li>Did you have a good time? Why?</li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <div class="controls">
+            <button class="btn-rec" id="btnRec" onclick="startRecording()">🎤 Grabar respuesta</button>
+            <button class="btn-stop" id="btnStop" onclick="stopRecording()" disabled>⏹️ Detener grabación</button>
+            <span class="live-status" id="liveStatus">Listo para grabar</span>
+        </div>
+
+        <div style="font-size:0.9em; font-weight:bold; color:#475569; margin-bottom:6px;">Transcripción de tu voz:</div>
+        <div class="transcript-box" id="transcriptBox">Aún no has grabado nada...</div>
+    </div>
+
+    <button class="btn-submit" onclick="evaluateFreeSpeaking()">Finalizar y Revisar Mi Grabación (0.0 - 10.0)</button>
+
+    <div class="final-summary" id="finalSummary"></div>
+</div>
+
+<script>
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    let recognition = null;
+    let finalTranscript = "";
+
+    const topicKeywords = new Set([
+        "sport", "sports", "soccer", "football", "basketball", "tennis", "swimming", "swim",
+        "swam", "running", "run", "ran", "bike", "bicycle", "rode", "ride", "gym", "exercise",
+        "exercised", "game", "games", "movie", "movies", "music", "park", "beach", "friend",
+        "friends", "family", "weekend", "saturday", "sunday", "yesterday", "fun", "great", "good"
+    ]);
+
+    const irregularPastMap = {
+        "go": "went",
+        "goed": "went",
+        "have": "had",
+        "haved": "had",
+        "do": "did",
+        "doed": "did",
+        "see": "saw",
+        "seed": "saw",
+        "eat": "ate",
+        "eated": "ate",
+        "drink": "drank",
+        "drinked": "drank",
+        "ride": "rode",
+        "rided": "rode",
+        "swim": "swam",
+        "swimmed": "swam",
+        "run": "ran",
+        "runned": "ran",
+        "win": "won",
+        "winned": "won",
+        "wake": "woke",
+        "waked": "woke",
+        "meet": "met",
+        "meeted": "met",
+        "get": "got",
+        "getted": "got"
+    };
+
+    const validPastForms = new Set([
+        "went", "was", "were", "had", "did", "saw", "ate", "drank", "rode",
+        "swam", "ran", "won", "woke", "met", "got", "made", "came", "bought", "played",
+        "watched", "listened", "walked", "visited", "stayed", "enjoyed", "practiced", "exercised"
+    ]);
+
+    function speakModel(text) {
+        if (!("speechSynthesis" in window)) return;
+        window.speechSynthesis.cancel();
+        const u = new SpeechSynthesisUtterance(text);
+        u.lang = "en-US";
+        u.rate = 0.85;
+        window.speechSynthesis.speak(u);
+    }
+
+    function startRecording() {
+        if (!SpeechRecognition) {
+            alert("Tu navegador no soporta reconocimiento de voz. Usa Google Chrome o Microsoft Edge.");
+            return;
+        }
+        finalTranscript = "";
+        recognition = new SpeechRecognition();
+        recognition.lang = "en-US";
+        recognition.interimResults = true;
+        recognition.continuous = true;
+
+        recognition.onresult = (event) => {
+            let interim = "";
+            for (let i = event.resultIndex; i < event.results.length; i++) {
+                const t = event.results[i][0].transcript;
+                if (event.results[i].isFinal) {
+                    finalTranscript += t + " ";
+                } else {
+                    interim += t;
+                }
+            }
+            document.getElementById("transcriptBox").innerText = (finalTranscript + interim).trim() || "Escuchando...";
+            document.getElementById("liveStatus").innerHTML = `<span class="recording-active">● Grabando... habla en inglés</span>`;
+        };
+
+        recognition.onerror = (e) => {
+            document.getElementById("liveStatus").innerText = `Error: ${e.error}`;
+        };
+
+        recognition.onend = () => {
+            document.getElementById("btnRec").disabled = false;
+            document.getElementById("btnStop").disabled = true;
+            document.getElementById("liveStatus").innerText = "Grabación lista para revisar";
+        };
+
+        recognition.start();
+        document.getElementById("btnRec").disabled = true;
+        document.getElementById("btnStop").disabled = false;
+        document.getElementById("liveStatus").innerHTML = `<span class="recording-active">● Grabando... habla en inglés</span>`;
+    }
+
+    function stopRecording() {
+        if (recognition) recognition.stop();
+    }
+
+    function evaluateFreeSpeaking() {
+        stopRecording();
+        const studentName = document.getElementById("studentName").value.trim() || "Estudiante";
+        const raw = finalTranscript.trim() || document.getElementById("transcriptBox").innerText.trim();
+
+        if (!raw || raw === "Aún no has grabado nada...") {
+            alert("Primero graba tu respuesta en voz alta antes de finalizar.");
+            return;
+        }
+
+        const cleanWords = raw
+            .toLowerCase()
+            .replace(/[^a-z0-9\s']/g, "")
+            .split(/\s+/)
+            .filter(Boolean);
+
+        const wordCount = cleanWords.length;
+
+        // 1. Detectar errores frecuentes de pasado simple en nivel básico
+        const grammarIssues = [];
+        cleanWords.forEach(w => {
+            if (irregularPastMap[w] && w.endsWith("ed")) {
+                grammarIssues.push(`Evita decir "<strong>${w}</strong>"; en pasado simple es "<strong>${irregularPastMap[w]}</strong>".`);
+            }
+        });
+        for (let i = 0; i < cleanWords.length - 1; i++) {
+            const pair = `${cleanWords[i]} ${cleanWords[i + 1]}`;
+            if (["didnt went", "didnt played", "didnt watched", "didnt had", "didnt saw", "didnt ate"].includes(pair)) {
+                const baseVerb = cleanWords[i + 1] === "went" ? "go" :
+                                 cleanWords[i + 1] === "had" ? "have" :
+                                 cleanWords[i + 1] === "saw" ? "see" :
+                                 cleanWords[i + 1] === "ate" ? "eat" :
+                                 cleanWords[i + 1].replace(/ed$/, "");
+                grammarIssues.push(`Después de <em>didn't</em> usa el verbo base: en vez de "<strong>${pair}</strong>", di "<strong>didn't ${baseVerb}</strong>".`);
+            }
+        }
+
+        // 2. Detectar verbos en pasado y vocabulario del tema
+        const pastFound = cleanWords.filter(w => validPastForms.has(w) || (w.length > 3 && w.endsWith("ed") && !irregularPastMap[w]));
+        const topicFound = cleanWords.filter(w => topicKeywords.has(w));
+
+        const lengthScore = Math.min(1, wordCount / 20) * 3.0;
+        const pastScore = Math.min(1, pastFound.length / 2) * 3.5;
+        const topicScore = Math.min(1, topicFound.length / 2) * 2.0;
+        const accuracyScore = Math.max(0, 1.5 - (grammarIssues.length * 0.5));
+
+        const finalGrade = Math.min(10, lengthScore + pastScore + topicScore + accuracyScore).toFixed(1);
+
+        let feedbackHtml = "";
+        if (pastFound.length > 0) {
+            feedbackHtml += `<div class="ok-item"><strong>Verbos en pasado detectados:</strong> ${Array.from(new Set(pastFound)).join(", ")}</div>`;
+        } else {
+            feedbackHtml += `<div class="issue-item"><strong>Tiempo pasado:</strong> No se detectaron verbos claros en pasado simple (por ejemplo: <em>played, went, watched, swam</em>).</div>`;
+        }
+
+        if (topicFound.length > 0) {
+            feedbackHtml += `<div class="ok-item"><strong>Vocabulario del tema detectado:</strong> ${Array.from(new Set(topicFound)).join(", ")}</div>`;
+        } else {
+            feedbackHtml += `<div class="issue-item"><strong>Relación con el tema:</strong> Incluye más palabras sobre deportes o actividades de tiempo libre (<em>soccer, park, movie, bike</em>).</div>`;
+        }
+
+        grammarIssues.forEach(issue => {
+            feedbackHtml += `<div class="issue-item"><strong>Corrección sugerida:</strong> ${issue}</div>`;
+        });
+
+        const modelPhrases = [
+            "I played soccer",
+            "I went to the park",
+            "I watched a movie",
+            "I rode my bike",
+            "I swam in the pool",
+            "I had a great weekend"
+        ];
+
+        const chipsHtml = modelPhrases
+            .map(p => `<button class="model-btn" onclick="speakModel('${p}')">🔊 ${p}</button>`)
+            .join("");
+
+        const summary = document.getElementById("finalSummary");
+        summary.style.display = "block";
+        summary.innerHTML = `
+            <h3>Revisión de Speaking — ${studentName}</h3>
+            <div class="grade-banner">
+                <div>Calificación Estimada (Escala 0.0 a 10.0)</div>
+                <div class="grade-number">${finalGrade} / 10.0</div>
+                <small>Palabras reconocidas: ${wordCount}</small>
+            </div>
+            <div class="correction-box">
+                <strong>Tu transcripción:</strong>
+                <p style="background:#f8fafc; padding:10px; border-radius:6px;">"${raw}"</p>
+                ${feedbackHtml}
+                <div style="margin-top:14px;">
+                    <strong>Frases modelo para practicar pronunciación en pasado:</strong>
+                    <div class="model-chips">${chipsHtml}</div>
+                </div>
+            </div>
+        `;
+        summary.scrollIntoView({ behavior: "smooth" });
+    }
+</script>
+
+</body>
+</html>
