@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Free Speaking Test: Sports & Free Time (Simple Past)</title>
+    <title>Speaking Rubric: Time, Fluency, Grammar & Pronunciation</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -14,7 +14,7 @@
             line-height: 1.55;
         }
         .container {
-            max-width: 880px;
+            max-width: 900px;
             margin: 0 auto;
             background: #ffffff;
             padding: 30px;
@@ -61,6 +61,28 @@
             margin: 16px 0;
             background: #f8fafc;
         }
+        .timer-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            background: #ffffff;
+            border: 1px solid #cbd5e1;
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 14px;
+        }
+        .timer-display {
+            font-size: 1.4em;
+            font-weight: 800;
+            font-family: monospace;
+            color: #0f172a;
+        }
+        .timer-goal {
+            font-size: 0.9em;
+            color: #475569;
+        }
         .controls {
             display: flex;
             flex-wrap: wrap;
@@ -96,10 +118,13 @@
             border: 1px dashed #cbd5e1;
             border-radius: 8px;
             padding: 14px;
-            min-height: 70px;
-            font-size: 1em;
+            min-height: 75px;
+            font-size: 1.02em;
             color: #0f172a;
         }
+        .word-ok { color: #15803d; font-weight: 600; background: #dcfce7; padding: 1px 4px; border-radius: 4px; }
+        .word-miss { color: #b91c1c; font-weight: 600; background: #fee2e2; padding: 1px 4px; border-radius: 4px; text-decoration: underline; }
+
         .final-summary {
             margin-top: 24px;
             padding: 24px;
@@ -121,6 +146,18 @@
             font-weight: 800;
             color: #1d4ed8;
             line-height: 1.1;
+        }
+        .rubric-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(195px, 1fr));
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+        .rubric-item {
+            background: #ffffff;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #bbf7d0;
         }
         .correction-box {
             background: #ffffff;
@@ -145,27 +182,30 @@
             border-radius: 0 6px 6px 0;
             color: #14532d;
         }
-        .model-chips {
+        .review-chips {
             display: flex;
             flex-wrap: wrap;
             gap: 8px;
             margin-top: 10px;
         }
-        .model-btn {
-            background: #e0f2fe;
-            color: #075985;
-            border: 1px solid #7dd3fc;
+        .review-btn {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fca5a5;
             padding: 6px 12px;
             border-radius: 20px;
             font-size: 0.9em;
+            font-weight: 600;
+            cursor: pointer;
         }
+        .review-btn:hover { background: #fecaca; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>Free Speaking Test: Sports & Free-Time Activities</h1>
-    <p class="subtitle">Habla libremente sobre el tema asignado en Simple Past. Al finalizar recibirás tu calificación y correcciones.</p>
+    <h1>Speaking Evaluation: Time, Fluency, Grammar & Pronunciation</h1>
+    <p class="subtitle">Habla sobre deportes o actividades de tiempo libre en Simple Past (Nivel Básico). Se evalúan 4 criterios (escala 1.0 a 10.0).</p>
 
     <div class="student-box">
         <label for="studentName"><strong>Nombre del estudiante:</strong></label>
@@ -173,231 +213,337 @@
     </div>
 
     <div class="topic-card">
-        <strong>Tema: What sports or free-time activities did you do last weekend?</strong>
-        <p style="margin:8px 0 6px;">Graba un relato corto en inglés (apunta a decir al menos <strong>20 palabras</strong>). Responde estas ideas guía:</p>
+        <strong>Tema: Sports & Free-Time Activities in the Past</strong>
+        <p style="margin:8px 0 6px;">Cuenta qué hiciste el fin de semana pasado. Objetivo de tiempo: <strong>unos 2 minutos</strong> (entre 1:30 y 2:30).</p>
         <ul class="guide-list">
-            <li>What sport or free-time activity did you do? (<em>played soccer, went swimming, rode my bike, watched a movie...</em>)</li>
-            <li>Who did you do it with, and where did you go?</li>
-            <li>Did you have a good time? Why?</li>
+            <li>What sport or free-time activity did you do? (<em>played soccer, went to the beach, rode my bike, watched a movie...</em>)</li>
+            <li>Who did you go with, and what happened?</li>
+            <li>How did you feel at the end of the day?</li>
+            <li>Tip: da detalles (<em>First, Then, After that, Finally</em>) para llegar a los 2 minutos.</li>
         </ul>
     </div>
 
     <div class="card">
+        <div class="timer-bar">
+            <div>
+                <span style="font-size:0.9em; font-weight:bold; color:#475569;">Tiempo de grabación:</span>
+                <span class="timer-display" id="timerDisplay">00:00</span>
+            </div>
+            <div class="timer-goal">Meta: <strong>1:30 – 2:30</strong> (≈ 2 min, máx. 3:00)</div>
+        </div>
+
         <div class="controls">
-            <button class="btn-rec" id="btnRec" onclick="startRecording()">🎤 Grabar respuesta</button>
-            <button class="btn-stop" id="btnStop" onclick="stopRecording()" disabled>⏹️ Detener grabación</button>
+            <button class="btn-rec" id="btnRec" onclick="startRecording()">🎤 Iniciar grabación</button>
+            <button class="btn-stop" id="btnStop" onclick="stopRecording()" disabled>⏹️ Detener</button>
             <span class="live-status" id="liveStatus">Listo para grabar</span>
         </div>
 
-        <div style="font-size:0.9em; font-weight:bold; color:#475569; margin-bottom:6px;">Transcripción de tu voz:</div>
+        <div style="font-size:0.9em; font-weight:bold; color:#475569; margin-bottom:6px;">Transcripción y revisión de pronunciación:</div>
         <div class="transcript-box" id="transcriptBox">Aún no has grabado nada...</div>
+        <div id="audioBox" style="display:none;margin-top:12px;"><div style="font-size:0.88em;font-weight:bold;color:#475569;margin-bottom:4px;">Tu audio grabado:</div><audio id="audioPlayer" controls style="width:100%;"></audio></div>
     </div>
 
-    <button class="btn-submit" onclick="evaluateFreeSpeaking()">Finalizar y Revisar Mi Grabación (0.0 - 10.0)</button>
+    <button class="btn-submit" id="btnFinish" onclick="evaluateSpeakingRubric()">Finalizar y Calcular Nota (1.0 - 10.0)</button>
 
     <div class="final-summary" id="finalSummary"></div>
 </div>
 
 <script>
+    // ====== CONFIGURACIÓN ======
+    // Pega aquí la URL de tu Web App de Google Apps Script (termina en /exec). Ver Code.gs
+    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwthp6HQiTn9xGsDdfuwhA0gfEXlRsO_-l3ogW0jta0C8EJz4-AjS2_LB-iV21D-dsZ0A/exec";
+    const TEACHER_EMAIL = "ar17071@ues.edu.sv";
+
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    let recognition = null;
-    let finalTranscript = "";
 
-    const topicKeywords = new Set([
-        "sport", "sports", "soccer", "football", "basketball", "tennis", "swimming", "swim",
-        "swam", "running", "run", "ran", "bike", "bicycle", "rode", "ride", "gym", "exercise",
-        "exercised", "game", "games", "movie", "movies", "music", "park", "beach", "friend",
-        "friends", "family", "weekend", "saturday", "sunday", "yesterday", "fun", "great", "good"
-    ]);
+    const WEIGHT_TIME = 2.5, WEIGHT_FLUENCY = 2.5, WEIGHT_GRAMMAR = 2.5, WEIGHT_PRONUNCIATION = 2.5;
+    // Duración promedio: 2 minutos
+    const MIN_TARGET_SEC = 90, IDEAL_MAX_SEC = 150, HARD_MAX_SEC = 180;
+    // Una palabra solo se considera "segura" si el reconocedor tiene buena confianza y sus alternativas coinciden
+    const CONF_SURE = 0.80, CONF_CLEAR = 0.75;
 
-    const irregularPastMap = {
-        "go": "went",
-        "goed": "went",
-        "have": "had",
-        "haved": "had",
-        "do": "did",
-        "doed": "did",
-        "see": "saw",
-        "seed": "saw",
-        "eat": "ate",
-        "eated": "ate",
-        "drink": "drank",
-        "drinked": "drank",
-        "ride": "rode",
-        "rided": "rode",
-        "swim": "swam",
-        "swimmed": "swam",
-        "run": "ran",
-        "runned": "ran",
-        "win": "won",
-        "winned": "won",
-        "wake": "woke",
-        "waked": "woke",
-        "meet": "met",
-        "meeted": "met",
-        "get": "got",
-        "getted": "got"
-    };
+    let recognition = null, mediaRecorder = null, audioChunks = [], audioBlob = null;
+    let isRecording = false, committedText = "", committedWords = [];
+    let finalTranscript = "", wordsInfo = [];
+    let elapsedSeconds = 0, timerInterval = null, lastReport = null;
 
-    const validPastForms = new Set([
-        "went", "was", "were", "had", "did", "saw", "ate", "drank", "rode",
-        "swam", "ran", "won", "woke", "met", "got", "made", "came", "bought", "played",
-        "watched", "listened", "walked", "visited", "stayed", "enjoyed", "practiced", "exercised"
-    ]);
+    const esc = t => String(t).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+    const clamp01 = v => Math.max(0, Math.min(1, v));
 
-    function speakModel(text) {
+    // Solo palabras que NO existen en inglés (el reconocedor casi nunca las escribe, así que si aparecen es real)
+    const overregular = { goed:"went", haved:"had", doed:"did", eated:"ate", drinked:"drank", rided:"rode", swimmed:"swam", runned:"ran", winned:"won", waked:"woke", meeted:"met", getted:"got", maked:"made", taked:"took", buyed:"bought", thinked:"thought", knowed:"knew", telled:"told" };
+    const irregularPast = new Set(["went","was","were","had","did","saw","ate","drank","rode","swam","ran","won","woke","met","got","made","came","bought","took","felt","gave","found","told","knew","thought","spent","slept","read","wrote","sang","sat","stood","lost","left","began"]);
+    const baseOf = { went:"go", had:"have", did:"do", saw:"see", ate:"eat", rode:"ride", swam:"swim", ran:"run", won:"win", woke:"wake", met:"meet", got:"get", made:"make", came:"come", bought:"buy", took:"take", felt:"feel", gave:"give", found:"find", told:"tell", knew:"know", thought:"think" };
+    const notPastEd = new Set(["need","indeed","speed","feed","seed","proceed","succeed","exceed","hundred","bed","red","sacred","weed","breed","bored"]);
+    const presentBase = new Set(["go","play","watch","eat","swim","ride","visit","stay","run","have","see","make","come","get","take","do","exercise","practice","cook","walk","enjoy","buy","meet"]);
+    const isPast = k => irregularPast.has(k) || (k.length > 3 && /ed$/.test(k) && !notPastEd.has(k));
+    const toBase = k => baseOf[k] || k.replace(/ed$/, "");
+    const key = w => w.toLowerCase().replace(/[’]/g, "'").replace(/^[^a-z0-9']+|[^a-z0-9']+$/g, "").replace(/'/g, "");
+
+    function formatTime(sec) {
+        return String(Math.floor(sec / 60)).padStart(2, "0") + ":" + String(sec % 60).padStart(2, "0");
+    }
+    function speakWord(word) {
         if (!("speechSynthesis" in window)) return;
         window.speechSynthesis.cancel();
-        const u = new SpeechSynthesisUtterance(text);
-        u.lang = "en-US";
-        u.rate = 0.85;
-        window.speechSynthesis.speak(u);
+        setTimeout(() => {
+            const u = new SpeechSynthesisUtterance(word);
+            const v = window.speechSynthesis.getVoices().filter(x => /^en[-_]US/i.test(x.lang))
+                .sort((a, b) => (/natural|neural|online/i.test(b.name) - /natural|neural|online/i.test(a.name)) || (/google us/i.test(b.name) - /google us/i.test(a.name)))[0];
+            if (v) u.voice = v;
+            u.lang = "en-US"; u.rate = 0.8;
+            window._lastUtt = u;
+            window.speechSynthesis.speak(u);
+        }, 100);
+    }
+    function practiceWord(btn) {
+        if (!SpeechRecognition) { alert("Usa Google Chrome o Microsoft Edge."); return; }
+        const target = key(btn.dataset.word);
+        const r = new SpeechRecognition();
+        r.lang = "en-US"; r.maxAlternatives = 5; r.interimResults = false;
+        btn.disabled = true; btn.innerText = "🎙️ Habla ahora...";
+        const done = m => { btn.innerText = m; setTimeout(() => { btn.innerText = "🎤 Repetir"; btn.disabled = false; }, 3000); };
+        r.onresult = e => {
+            const alts = Array.from(e.results[0]).map(a => a.transcript.split(/\s+/).map(key));
+            if (alts[0].includes(target)) done("✅ ¡Bien!");
+            else if (alts.some(a => a.includes(target))) done("🔁 Casi, inténtalo otra vez");
+            else done(`❌ Se entendió: "${alts[0].join(" ")}"`);
+        };
+        r.onerror = r.onnomatch = () => done("⚠️ No se escuchó");
+        try { r.start(); } catch (_) { done("⚠️ Error"); }
     }
 
-    function startRecording() {
-        if (!SpeechRecognition) {
-            alert("Tu navegador no soporta reconocimiento de voz. Usa Google Chrome o Microsoft Edge.");
-            return;
-        }
-        finalTranscript = "";
-        recognition = new SpeechRecognition();
-        recognition.lang = "en-US";
-        recognition.interimResults = true;
-        recognition.continuous = true;
+    function startTimer() {
+        clearInterval(timerInterval);
+        elapsedSeconds = 0;
+        document.getElementById("timerDisplay").innerText = "00:00";
+        timerInterval = setInterval(() => {
+            elapsedSeconds++;
+            document.getElementById("timerDisplay").innerText = formatTime(elapsedSeconds);
+            if (elapsedSeconds >= HARD_MAX_SEC) stopRecording();
+        }, 1000);
+    }
+    function stopTimer() { clearInterval(timerInterval); timerInterval = null; }
 
-        recognition.onresult = (event) => {
-            let interim = "";
-            for (let i = event.resultIndex; i < event.results.length; i++) {
-                const t = event.results[i][0].transcript;
-                if (event.results[i].isFinal) {
-                    finalTranscript += t + " ";
-                } else {
-                    interim += t;
+    async function startRecording() {
+        if (!SpeechRecognition) { alert("Tu navegador no soporta reconocimiento de voz. Usa Google Chrome o Microsoft Edge."); return; }
+        let stream;
+        try { stream = await navigator.mediaDevices.getUserMedia({ audio: true }); }
+        catch (err) { alert("No se pudo acceder al micrófono: " + err.message); return; }
+
+        audioChunks = []; audioBlob = null;
+        mediaRecorder = new MediaRecorder(stream);
+        mediaRecorder.ondataavailable = e => { if (e.data && e.data.size > 0) audioChunks.push(e.data); };
+        mediaRecorder.onstop = () => {
+            stream.getTracks().forEach(t => t.stop());
+            audioBlob = new Blob(audioChunks, { type: mediaRecorder.mimeType || "audio/webm" });
+            document.getElementById("audioPlayer").src = URL.createObjectURL(audioBlob);
+            document.getElementById("audioBox").style.display = "block";
+        };
+        mediaRecorder.start();
+
+        finalTranscript = ""; wordsInfo = []; committedText = ""; committedWords = []; isRecording = true;
+
+        const build = () => {
+            const rec = new SpeechRecognition();
+            rec.lang = "en-US"; rec.interimResults = true; rec.continuous = true; rec.maxAlternatives = 3;
+            rec.onresult = (event) => {
+                let interim = "", fin = "";
+                const words = [];
+                for (let i = 0; i < event.results.length; i++) {
+                    const res = event.results[i];
+                    const txt = res[0].transcript.trim();
+                    if (!res.isFinal) { interim += txt + " "; continue; }
+                    fin += txt + " ";
+                    const toks = txt.split(/\s+/).filter(Boolean);
+                    const conf = typeof res[0].confidence === "number" ? res[0].confidence : 0;
+                    const alts = [];
+                    for (let a = 1; a < res.length; a++) {
+                        const at = res[a].transcript.trim().split(/\s+/).filter(Boolean);
+                        if (at.length === toks.length) alts.push(at);
+                    }
+                    toks.forEach((w, k) => {
+                        const others = alts.map(at => at[k]).filter(x => key(x) !== key(w));
+                        words.push({ word: w, conf, unstable: others.length > 0, alts: Array.from(new Set(others.map(key))) });
+                    });
                 }
-            }
-            document.getElementById("transcriptBox").innerText = (finalTranscript + interim).trim() || "Escuchando...";
-            document.getElementById("liveStatus").innerHTML = `<span class="recording-active">● Grabando... habla en inglés</span>`;
+                finalTranscript = (committedText + " " + fin).trim();
+                wordsInfo = committedWords.concat(words);
+                document.getElementById("transcriptBox").innerText = (finalTranscript + " " + interim).trim() || "Escuchando...";
+                document.getElementById("liveStatus").innerHTML = `<span class="recording-active">● Grabando... habla en inglés</span>`;
+            };
+            rec.onerror = (e) => {
+                if (e.error === "not-allowed" || e.error === "service-not-allowed") isRecording = false;
+                document.getElementById("liveStatus").innerText = `Aviso del micrófono: ${e.error}`;
+            };
+            rec.onend = () => {
+                committedText = finalTranscript; committedWords = wordsInfo;
+                if (isRecording && elapsedSeconds < HARD_MAX_SEC) { try { recognition = build(); recognition.start(); return; } catch (_) {} }
+                stopTimer();
+                document.getElementById("btnRec").disabled = false;
+                document.getElementById("btnStop").disabled = true;
+                document.getElementById("liveStatus").innerText = `Grabación detenida (${formatTime(elapsedSeconds)})`;
+            };
+            return rec;
         };
-
-        recognition.onerror = (e) => {
-            document.getElementById("liveStatus").innerText = `Error: ${e.error}`;
-        };
-
-        recognition.onend = () => {
-            document.getElementById("btnRec").disabled = false;
-            document.getElementById("btnStop").disabled = true;
-            document.getElementById("liveStatus").innerText = "Grabación lista para revisar";
-        };
-
+        recognition = build();
         recognition.start();
+        startTimer();
         document.getElementById("btnRec").disabled = true;
         document.getElementById("btnStop").disabled = false;
         document.getElementById("liveStatus").innerHTML = `<span class="recording-active">● Grabando... habla en inglés</span>`;
     }
 
     function stopRecording() {
-        if (recognition) recognition.stop();
+        isRecording = false;
+        stopTimer();
+        if (recognition) { try { recognition.stop(); } catch (_) {} }
+        if (mediaRecorder && mediaRecorder.state !== "inactive") { try { mediaRecorder.stop(); } catch (_) {} }
     }
 
-    function evaluateFreeSpeaking() {
+    async function evaluateSpeakingRubric() {
+        const wasRecording = isRecording;
         stopRecording();
+        if (wasRecording) await new Promise(r => setTimeout(r, 800));
+
         const studentName = document.getElementById("studentName").value.trim() || "Estudiante";
-        const raw = finalTranscript.trim() || document.getElementById("transcriptBox").innerText.trim();
+        const spokenText = finalTranscript.trim();
+        if (!spokenText) { alert("Primero graba tu respuesta en voz alta antes de finalizar."); return; }
 
-        if (!raw || raw === "Aún no has grabado nada...") {
-            alert("Primero graba tu respuesta en voz alta antes de finalizar.");
-            return;
-        }
+        // Tokens con su información de confianza (solo palabras que el reconocedor devolvió)
+        const toks = spokenText.split(/\s+/).filter(Boolean).map((raw, i) => ({ raw, k: key(raw), info: wordsInfo[i] || { conf: 0, unstable: false, alts: [] } })).filter(t => t.k);
+        const wordCount = toks.length;
+        const duration = Math.max(1, elapsedSeconds);
+        const sure = t => !t.info.unstable && (t.info.conf === 0 || t.info.conf >= CONF_SURE);
 
-        const cleanWords = raw
-            .toLowerCase()
-            .replace(/[^a-z0-9\s']/g, "")
-            .split(/\s+/)
-            .filter(Boolean);
+        // 1. TIEMPO (meta ≈ 2 min)
+        let timeRatio, timeNote;
+        if (duration >= MIN_TARGET_SEC && duration <= IDEAL_MAX_SEC) { timeRatio = 1; timeNote = `Dentro de la meta (${formatTime(MIN_TARGET_SEC)}–${formatTime(IDEAL_MAX_SEC)}).`; }
+        else if (duration < MIN_TARGET_SEC) { timeRatio = Math.max(0.2, duration / MIN_TARGET_SEC); timeNote = `Intenta hablar cerca de 2 minutos (mínimo ${formatTime(MIN_TARGET_SEC)}).`; }
+        else { timeRatio = Math.max(0.5, 1 - (duration - IDEAL_MAX_SEC) / 60); timeNote = `Te pasaste de ${formatTime(IDEAL_MAX_SEC)}.`; }
+        const timePoints = clamp01(timeRatio) * WEIGHT_TIME;
 
-        const wordCount = cleanWords.length;
+        // 2. FLUIDEZ
+        const wpm = Math.round((wordCount / duration) * 60);
+        const volumeRatio = clamp01(wordCount / 110);
+        const paceRatio = wpm < 50 ? Math.max(0.4, wpm / 50) : (wpm > 150 ? 0.75 : 1);
+        const fluencyPoints = clamp01(volumeRatio * 0.65 + paceRatio * 0.35) * WEIGHT_FLUENCY;
 
-        // 1. Detectar errores frecuentes de pasado simple en nivel básico
-        const grammarIssues = [];
-        cleanWords.forEach(w => {
-            if (irregularPastMap[w] && w.endsWith("ed")) {
-                grammarIssues.push(`Evita decir "<strong>${w}</strong>"; en pasado simple es "<strong>${irregularPastMap[w]}</strong>".`);
+        // 3. GRAMÁTICA: solo se penaliza lo que el sistema oyó con seguridad
+        const pastSet = new Set(toks.filter(t => isPast(t.k)).map(t => t.k));
+        const sureErrors = [], doubtful = [];
+        const add = (arr, t0, t1, msg) => arr.push(`${msg} <small>(dijiste: "<em>${esc(t0.raw)} ${esc(t1 ? t1.raw : "")}</em>")</small>`);
+        let pastCtx = 0;
+        toks.forEach((a, i) => {
+            const b = toks[i + 1];
+            if (overregular[a.k]) {
+                (sure(a) ? sureErrors : doubtful).push(`Usa "<strong>${overregular[a.k]}</strong>" en vez de "<strong>${esc(a.k)}</strong>".`);
             }
+            if (a.k === "yesterday" || (a.k === "last" && b && /^(week|weekend|month|year|night|summer|saturday|sunday)$/.test(b.k))) pastCtx = 10;
+            else if (pastCtx > 0) pastCtx--;
+            if (!b) return;
+            const ok = sure(a) && sure(b);
+            if ((a.k === "didnt" || a.k === "did") && isPast(b.k) && !/^(was|were)$/.test(b.k))
+                add(ok ? sureErrors : doubtful, a, b, `Tras <em>${a.k === "didnt" ? "didn't" : "did"}</em> usa el verbo base: "<strong>${a.k === "didnt" ? "didn't" : "did"} ${toBase(b.k)}</strong>".`);
+            if ((a.k === "i" || /^(he|she|it)$/.test(a.k)) && b.k === "were" && !(toks[i - 1] && toks[i - 1].k === "if"))
+                add(ok ? sureErrors : doubtful, a, b, `Con <em>${a.k}</em> se usa "<strong>was</strong>".`);
+            if (/^(we|you|they)$/.test(a.k) && b.k === "was")
+                add(ok ? sureErrors : doubtful, a, b, `Con <em>${a.k}</em> se usa "<strong>were</strong>".`);
+            if (pastCtx > 0 && /^(i|we|they|he|she)$/.test(a.k) && presentBase.has(b.k))
+                add(ok ? sureErrors : doubtful, a, b, `Hablas del pasado: usa "<strong>${a.k} ${b.k === "go" ? "went" : b.k + "ed"}</strong>" (pasado simple).`);
         });
-        for (let i = 0; i < cleanWords.length - 1; i++) {
-            const pair = `${cleanWords[i]} ${cleanWords[i + 1]}`;
-            if (["didnt went", "didnt played", "didnt watched", "didnt had", "didnt saw", "didnt ate"].includes(pair)) {
-                const baseVerb = cleanWords[i + 1] === "went" ? "go" :
-                                 cleanWords[i + 1] === "had" ? "have" :
-                                 cleanWords[i + 1] === "saw" ? "see" :
-                                 cleanWords[i + 1] === "ate" ? "eat" :
-                                 cleanWords[i + 1].replace(/ed$/, "");
-                grammarIssues.push(`Después de <em>didn't</em> usa el verbo base: en vez de "<strong>${pair}</strong>", di "<strong>didn't ${baseVerb}</strong>".`);
-            }
-        }
+        const uniq = arr => Array.from(new Set(arr));
+        const grammarIssues = uniq(sureErrors), doubtfulIssues = uniq(doubtful);
+        const pastRatio = clamp01(pastSet.size / 6);
+        const errPenalty = Math.min(0.5, grammarIssues.length * 0.1);
+        const grammarPoints = clamp01(pastRatio - errPenalty) * clamp01(wordCount / 40) * WEIGHT_GRAMMAR;
 
-        // 2. Detectar verbos en pasado y vocabulario del tema
-        const pastFound = cleanWords.filter(w => validPastForms.has(w) || (w.length > 3 && w.endsWith("ed") && !irregularPastMap[w]));
-        const topicFound = cleanWords.filter(w => topicKeywords.has(w));
-
-        const lengthScore = Math.min(1, wordCount / 20) * 3.0;
-        const pastScore = Math.min(1, pastFound.length / 2) * 3.5;
-        const topicScore = Math.min(1, topicFound.length / 2) * 2.0;
-        const accuracyScore = Math.max(0, 1.5 - (grammarIssues.length * 0.5));
-
-        const finalGrade = Math.min(10, lengthScore + pastScore + topicScore + accuracyScore).toFixed(1);
-
-        let feedbackHtml = "";
-        if (pastFound.length > 0) {
-            feedbackHtml += `<div class="ok-item"><strong>Verbos en pasado detectados:</strong> ${Array.from(new Set(pastFound)).join(", ")}</div>`;
-        } else {
-            feedbackHtml += `<div class="issue-item"><strong>Tiempo pasado:</strong> No se detectaron verbos claros en pasado simple (por ejemplo: <em>played, went, watched, swam</em>).</div>`;
-        }
-
-        if (topicFound.length > 0) {
-            feedbackHtml += `<div class="ok-item"><strong>Vocabulario del tema detectado:</strong> ${Array.from(new Set(topicFound)).join(", ")}</div>`;
-        } else {
-            feedbackHtml += `<div class="issue-item"><strong>Relación con el tema:</strong> Incluye más palabras sobre deportes o actividades de tiempo libre (<em>soccer, park, movie, bike</em>).</div>`;
-        }
-
-        grammarIssues.forEach(issue => {
-            feedbackHtml += `<div class="issue-item"><strong>Corrección sugerida:</strong> ${issue}</div>`;
+        // 4. PRONUNCIACIÓN (misma lista para aciertos y total => máximo 100%)
+        let clearCount = 0, confSum = 0, confN = 0;
+        const reviewList = [], seenRev = new Set();
+        const highlighted = toks.map(t => {
+            if (t.info.conf > 0) { confSum += t.info.conf; confN++; }
+            const unclear = (t.info.conf > 0 && t.info.conf < CONF_CLEAR) || t.info.unstable;
+            if (!unclear) { clearCount++; return `<span class="word-ok">${esc(t.raw)}</span>`; }
+            if (t.k.length > 2 && !seenRev.has(t.k)) { seenRev.add(t.k); reviewList.push({ word: t.k, alts: t.info.alts }); }
+            return `<span class="word-miss">${esc(t.raw)}</span>`;
         });
+        const avgConf = confN ? confSum / confN : 0.8;
+        const pronRatio = clamp01(0.6 * clamp01((avgConf - 0.5) / 0.45) + 0.4 * (clearCount / wordCount));
+        const pronPoints = pronRatio * WEIGHT_PRONUNCIATION;
 
-        const modelPhrases = [
-            "I played soccer",
-            "I went to the park",
-            "I watched a movie",
-            "I rode my bike",
-            "I swam in the pool",
-            "I had a great weekend"
-        ];
+        const finalGrade = Math.max(1, Math.min(10, timePoints + fluencyPoints + grammarPoints + pronPoints)).toFixed(1);
+        document.getElementById("transcriptBox").innerHTML = highlighted.join(" ");
 
-        const chipsHtml = modelPhrases
-            .map(p => `<button class="model-btn" onclick="speakModel('${p}')">🔊 ${p}</button>`)
-            .join("");
+        let feedbackHtml = `<div class="ok-item"><strong>Verbos en pasado detectados (${pastSet.size}):</strong> ${pastSet.size ? esc(Array.from(pastSet).join(", ")) : "Ninguno claro detectado"} <small>(meta: 6 o más diferentes)</small></div>`;
+        grammarIssues.forEach(i => feedbackHtml += `<div class="issue-item"><strong>Corrección gramatical:</strong> ${i}</div>`);
+        if (doubtfulIssues.length) feedbackHtml += `<div class="ok-item" style="background:#fffbeb;border-color:#f59e0b;color:#78350f;"><strong>⚠️ Posibles errores (NO se descontaron):</strong> el sistema no estuvo seguro de lo que oyó. Revisa si realmente lo dijiste; tu docente puede escuchar tu audio.<br>${doubtfulIssues.map(i => "• " + i).join("<br>")}</div>`;
+        if (reviewList.length) feedbackHtml += `<div class="issue-item"><strong>Palabras poco claras para el sistema:</strong><br>${reviewList.slice(0, 15).map(r => `• <strong>${esc(r.word)}</strong>${r.alts.length ? ` <small>(también pudo entender: ${esc(r.alts.join(", "))})</small>` : ""}`).join("<br>")}<br><small>Si ya la dijiste bien, puede ser un error del reconocedor, no tuyo.</small></div>`;
+
+        const practice = reviewList.length ? reviewList.map(r => r.word) : Array.from(pastSet).slice(0, 6);
+        const chipsHtml = (practice.length ? practice : ["played", "went", "watched"]).slice(0, 15).map(w =>
+            `<span style="display:inline-flex;gap:4px;"><button class="review-btn" data-word="${esc(w)}" onclick="speakWord(this.dataset.word)">🔊 ${esc(w)}</button><button class="review-btn" style="background:#dbeafe;color:#1e3a8a;border-color:#93c5fd;" data-word="${esc(w)}" onclick="practiceWord(this)">🎤 Repetir</button></span>`).join("");
+
+        document.getElementById("btnRec").disabled = true;
+        document.getElementById("btnStop").disabled = true;
+        document.getElementById("btnFinish").disabled = true;
+
+        lastReport = {
+            studentName, finalGrade, durationSec: duration, wordCount, wpm,
+            timeScore: timePoints.toFixed(2), fluencyScore: fluencyPoints.toFixed(2),
+            grammarScore: grammarPoints.toFixed(2), pronunciationScore: pronPoints.toFixed(2),
+            pronunciationPct: Math.round(pronRatio * 100),
+            pastVerbs: Array.from(pastSet).join(", "),
+            grammarErrors: grammarIssues.map(x => x.replace(/<[^>]+>/g, "")).join(" | "),
+            doubtfulErrors: doubtfulIssues.map(x => x.replace(/<[^>]+>/g, "")).join(" | "),
+            unclearWords: reviewList.map(r => r.word).join(", "),
+            transcript: spokenText
+        };
 
         const summary = document.getElementById("finalSummary");
         summary.style.display = "block";
         summary.innerHTML = `
-            <h3>Revisión de Speaking — ${studentName}</h3>
-            <div class="grade-banner">
-                <div>Calificación Estimada (Escala 0.0 a 10.0)</div>
-                <div class="grade-number">${finalGrade} / 10.0</div>
-                <small>Palabras reconocidas: ${wordCount}</small>
+            <h3>Reporte de Speaking — ${esc(studentName)}</h3>
+            <div class="grade-banner"><div>Calificación Final (Escala 1.0 a 10.0)</div><div class="grade-number">${finalGrade} / 10.0</div></div>
+            <div class="rubric-grid">
+                <div class="rubric-item"><strong>1. Tiempo:</strong><br>${timePoints.toFixed(2)} / ${WEIGHT_TIME.toFixed(1)} pts<br><small>${formatTime(duration)} — ${timeNote}</small></div>
+                <div class="rubric-item"><strong>2. Fluidez:</strong><br>${fluencyPoints.toFixed(2)} / ${WEIGHT_FLUENCY.toFixed(1)} pts<br><small>${wordCount} palabras (~${wpm} WPM)</small></div>
+                <div class="rubric-item"><strong>3. Grammar:</strong><br>${grammarPoints.toFixed(2)} / ${WEIGHT_GRAMMAR.toFixed(1)} pts<br><small>${grammarIssues.length} error(es) seguro(s)</small></div>
+                <div class="rubric-item"><strong>4. Pronunciación:</strong><br>${pronPoints.toFixed(2)} / ${WEIGHT_PRONUNCIATION.toFixed(1)} pts<br><small>${Math.round(pronRatio * 100)}% claridad</small></div>
             </div>
-            <div class="correction-box">
-                <strong>Tu transcripción:</strong>
-                <p style="background:#f8fafc; padding:10px; border-radius:6px;">"${raw}"</p>
-                ${feedbackHtml}
-                <div style="margin-top:14px;">
-                    <strong>Frases modelo para practicar pronunciación en pasado:</strong>
-                    <div class="model-chips">${chipsHtml}</div>
-                </div>
+            <div class="correction-box">${feedbackHtml}
+                <div style="margin-top:14px;"><strong>Repaso de pronunciación (escucha y repite):</strong><div class="review-chips">${chipsHtml}</div></div>
             </div>
-        `;
+            <div style="margin-top:16px;padding:14px;border:2px solid #6d28d9;border-radius:10px;background:#faf5ff;">
+                <strong>¿Listo para entregar?</strong> Se enviará tu nota, transcripción y audio al docente.<br>
+                <button class="btn-submit" style="margin-top:10px;" id="btnSend" onclick="sendToTeacher()">📧 Enviar resultado y audio al docente</button>
+                <div id="sendStatus" style="margin-top:10px;font-weight:600;"></div>
+            </div>`;
         summary.scrollIntoView({ behavior: "smooth" });
     }
+
+    function blobToBase64(blob) {
+        return new Promise((res, rej) => { const r = new FileReader(); r.onloadend = () => res((r.result.split(",")[1]) || ""); r.onerror = rej; r.readAsDataURL(blob); });
+    }
+
+    async function sendToTeacher() {
+        const st = document.getElementById("sendStatus"), btn = document.getElementById("btnSend");
+        if (!lastReport) return;
+        if (!APPS_SCRIPT_URL) { st.style.color = "#92400e"; st.innerText = "⚠️ El docente aún no configuró APPS_SCRIPT_URL en el archivo. Avísale a tu docente."; return; }
+        btn.disabled = true; st.style.color = "#1e3a8a"; st.innerText = "⏳ Enviando...";
+        try {
+            const audioBase64 = audioBlob ? await blobToBase64(audioBlob) : "";
+            await fetch(APPS_SCRIPT_URL, {
+                method: "POST", mode: "no-cors",
+                headers: { "Content-Type": "text/plain;charset=utf-8" },
+                body: JSON.stringify({ ...lastReport, teacherEmail: TEACHER_EMAIL, audioBase64, audioMimeType: audioBlob ? audioBlob.type : "" })
+            });
+            st.style.color = "#166534"; st.innerText = "✅ Enviado al docente (" + TEACHER_EMAIL + ").";
+        } catch (err) {
+            btn.disabled = false; st.style.color = "#991b1b"; st.innerText = "❌ No se pudo enviar: " + err.message;
+        }
+    }
+    if ("speechSynthesis" in window) window.speechSynthesis.getVoices();
 </script>
 
 </body>
